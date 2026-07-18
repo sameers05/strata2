@@ -11,7 +11,7 @@ export default function Sidebar({ state, activeTabId, renameTarget, api }) {
         {listOrder.length === 0 && <div className="sidebar-empty">No Lists yet</div>}
         {listOrder.map((id, i) => {
           const list = lists[id]
-          const renaming = renameTarget === id
+          const renaming = renameTarget?.id === id && renameTarget.where === 'sidebar'
           return (
             <div
               key={id}
@@ -31,7 +31,7 @@ export default function Sidebar({ state, activeTabId, renameTarget, api }) {
                   title={list.name || 'Untitled'}
                   onDoubleClick={(e) => {
                     e.stopPropagation()
-                    api.beginRename(id)
+                    api.beginRename(id, 'sidebar')
                   }}
                 >
                   {list.name || 'Untitled'}

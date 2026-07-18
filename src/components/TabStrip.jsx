@@ -21,7 +21,7 @@ export default function TabStrip({ state, activeTabId, renameTarget, api }) {
         .filter((id) => lists[id])
         .map((id) => {
           const list = lists[id]
-          const renaming = renameTarget === id
+          const renaming = renameTarget?.id === id && renameTarget.where === 'tab'
           return (
             <div
               key={id}
@@ -41,7 +41,7 @@ export default function TabStrip({ state, activeTabId, renameTarget, api }) {
                   title={list.name || 'Untitled'}
                   onDoubleClick={(e) => {
                     e.stopPropagation()
-                    api.beginRename(id)
+                    api.beginRename(id, 'tab')
                   }}
                 >
                   {list.name || 'Untitled'}

@@ -46,7 +46,7 @@ export default function Ribbon({
         <Btn ico="🧹" cap="Clear completed" disabled={noList || !hasCompleted} onClick={api.clearCompleted} />
       </div>
       <div className="ribbon-group">
-        <Btn ico="✎" cap="Rename List" disabled={noList} onClick={() => api.beginRename(activeListId)} />
+        <Btn ico="✎" cap="Rename List" disabled={noList} onClick={() => api.beginRename(activeListId, 'tab')} />
         <Btn ico="✖" cap="Delete List" danger disabled={noList} onClick={() => api.deleteList(activeListId)} />
       </div>
     </div>

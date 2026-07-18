@@ -31,7 +31,11 @@ export default function App() {
   const [editingId, setEditingId] = useState(null) // item in inline text-edit
   const [collapsed, setCollapsed] = useState(() => new Set()) // session-only
   const [completedExpanded, setCompletedExpanded] = useState(false)
-  const [renameTarget, setRenameTarget] = useState(null) // listId being renamed
+  // Which List is being inline-renamed, and WHERE. A List shows in both the
+  // sidebar and its tab, so we must target one location — otherwise two rename
+  // inputs mount for the same id and their focus effects fight (the 2nd blurs
+  // the 1st, firing onBlur→commit and tearing both down). Shape: {id, where}.
+  const [renameTarget, setRenameTarget] = useState(null)
   const [settingsOpen, setSettingsOpen] = useState(false)
 
   const activeTabId = state?.session.activeTabId ?? 'home'
@@ -43,6 +47,7 @@ export default function App() {
     setFocusedId(null)
     setEditingId(null)
     setCompletedExpanded(false)
+    setRenameTarget(null)
   }, [activeTabId])
 
   if (!state) return <div style={{ padding: 24 }}>Loading…</div>
@@ -160,7 +165,7 @@ export default function App() {
     if (!confirm(`Delete the List "${l?.name || 'Untitled'}"? This cannot be undone.`)) return
     setState(S.deleteList(state, id))
   }
-  const beginRename = (id) => setRenameTarget(id)
+  const beginRename = (id, where = 'tab') => setRenameTarget({ id, where })
   const commitRename = (id, name) => {
     setState(S.renameList(state, id, name))
     setRenameTarget(null)
